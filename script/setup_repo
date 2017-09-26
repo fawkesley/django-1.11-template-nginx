@@ -1,0 +1,61 @@
+#!/bin/sh -eu
+
+PROJECT_NAME="exampleproject"
+
+APP_NAME="exampleapp"
+
+HOSTNAME="exampleproject.example.com"
+
+LINUX_USER="exampleproject"
+
+PORT_NUMBER="8001"
+
+
+# =================================================================
+
+THIS_SCRIPT=$0
+REPO_DIR=$(dirname $0)/..
+
+replace() {
+  WHAT=$1
+  WITH=$2
+
+  cd "${REPO_DIR}"
+
+  grep -Rl \
+    --exclude-dir=.git \
+    --exclude=./script/setup_repo \
+    "${WHAT}" \
+    . |xargs sed -i "s/${WHAT}/${WITH}/g"
+
+  find . -iname "*${WHAT}*" |xargs rename "s/${WHAT}/${WITH}/g"
+
+  cd -
+}
+
+set_hostname() {
+  replace '{HOSTNAME}' "${HOSTNAME}"
+}
+
+set_project_name() {
+  replace '{PROJECT_NAME}' "${PROJECT_NAME}"
+}
+
+set_app_name() {
+  replace '{APP_NAME}' "${APP_NAME}"
+}
+
+set_linux_user() {
+  replace '{LINUX_USER}' "${LINUX_USER}"
+}
+
+set_port_number() {
+  replace '{PORT_NUMBER}' "${PORT_NUMBER}"
+}
+
+
+set_hostname
+set_project_name
+set_app_name
+set_linux_user
+set_port_number
