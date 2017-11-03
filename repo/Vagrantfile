@@ -53,8 +53,8 @@ config.vm.provider :virtualbox do |vb|
   vb.customize ["modifyvm", :id, "--memory", "2048"]
   vb.customize ["modifyvm", :id, "--cpus", "2"]
 
-  config.vm.synced_folder "./.apt-cache", "/var/cache/apt/archives"
-  config.vm.synced_folder "./.tmp-download-cache", "/tmp/download"
+  config.vm.synced_folder "./vagrant/cache/apt", "/var/cache/apt/archives"
+  config.vm.synced_folder "./vagrant/cache/tmp-download", "/tmp/download"
   config.vm.synced_folder "./", "/home/vagrant/app"
 end
 

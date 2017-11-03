@@ -1,5 +1,6 @@
-.apt-cache/*
-.tmp-download-cache/*
+.vagrant/cache/apt/*
+.vagrant/cache/tmp-download/*
+
 .vagrant/*
 collected_static/*
 
