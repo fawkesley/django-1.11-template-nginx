@@ -88,6 +88,14 @@ set_port_number() {
   replace '{PORT_NUMBER}' "${PORT_NUMBER}"
 }
 
+show_complete_message() {
+  echo
+  echo "Done."
+  echo
+  echo "$ cd $DESTINATION_DIR && vagrant up"
+  echo
+}
+
 
 check_directory_is_empty
 set -x
@@ -97,3 +105,5 @@ set_project_name
 set_app_name
 set_linux_user
 set_port_number
+set +x
+show_complete_message
