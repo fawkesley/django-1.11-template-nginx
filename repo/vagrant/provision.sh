@@ -26,7 +26,8 @@ install_system_dependencies() {
     ruby-dev \
     unzip
 
-  gem install sass listen
+  sass -v || gem install sass
+  listen -v || gem install listen
 }
 
 run_as_vagrant() {
