@@ -1,0 +1,99 @@
+#!/bin/sh -eu
+
+DESTINATION_DIR="$HOME/repo/expirybot-django"
+
+PROJECT_NAME="expirybot"
+
+APP_NAME="keys"
+
+HOSTNAME="app.expirybot.com"
+
+LINUX_USER="expirybot"
+
+PORT_NUMBER="8001"
+
+
+# =================================================================
+
+if [ $# -eq 0 ]; then
+  echo
+  echo "Edit $0 then run with 'run' argument"
+  echo "  $0 run"
+  exit 1
+fi
+
+
+THIS_SCRIPT=$0
+REPO_DIR=$(dirname $0)/repo
+
+replace() {
+  WHAT=$1
+  WITH=$2
+
+  cd "${DESTINATION_DIR}"
+
+  grep -Rl \
+    --exclude-dir=.git \
+    --exclude=./script/setup_repo \
+    "${WHAT}" \
+    . |xargs sed -i "s/${WHAT}/${WITH}/g"
+
+  while true
+  do
+    FILE_TO_RENAME=$(find . -iname "*${WHAT}*" | sort | head -n 1)
+
+    if [ "$FILE_TO_RENAME" != "" ]; then
+      rename "s/${WHAT}/${WITH}/g" $FILE_TO_RENAME
+    else
+      break
+    fi
+  done
+
+  cd -
+}
+
+
+check_directory_is_empty() {
+  mkdir -p "${DESTINATION_DIR}"
+
+  if [ "$(ls -A $DESTINATION_DIR)" ]; then
+    echo "Destination dir is not empty: $DESTINATION_DIR"
+    exit 2
+  fi
+}
+
+copy_template_files() {
+  cd "${REPO_DIR}"
+  cp -R . "$DESTINATION_DIR"
+  cd -
+}
+
+set_hostname() {
+  replace '{HOSTNAME}' "${HOSTNAME}"
+}
+
+set_project_name() {
+  replace '{PROJECT_NAME}' "${PROJECT_NAME}"
+}
+
+set_app_name() {
+  replace '{APP_NAME}' "${APP_NAME}"
+}
+
+set_linux_user() {
+  replace '{LINUX_USER}' "${LINUX_USER}"
+}
+
+set_port_number() {
+  replace '{PORT_NUMBER}' "${PORT_NUMBER}"
+}
+
+
+check_directory_is_empty
+set -x
+copy_template_files
+set_hostname
+set_project_name
+set_app_name
+set_linux_user
+set_port_number
