@@ -9,6 +9,8 @@ upstream {PROJECT_NAME}_gunicorn {
 
 server {
     listen 443;
+    listen [::]:443;
+
     server_name {HOSTNAME};
 
     ssl_certificate           /etc/letsencrypt/live/{HOSTNAME}/fullchain.pem;
