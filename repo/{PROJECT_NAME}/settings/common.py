@@ -38,7 +38,6 @@ INSTALLED_APPS = [
 
     '{PROJECT_NAME}.apps.{APP_NAME}',
 
-    'rest_framework',
     'django_extensions',
 ]
 
